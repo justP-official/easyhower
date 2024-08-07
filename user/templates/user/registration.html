@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<section class="form-wrapper">
+    <div class="container">
+        <form action="{% url "user:registration" %}" class="form form_big" method="post">
+            {% csrf_token %}
+            <section class="form__item">
+                <label class="form__label" for="id_username">
+                    <span class="form__text">Имя пользователя:</span>
+                </label>
+                <input type="text" name="username" class="form__input" id="id_username" required>
+            </section>
+
+            <section class="form__item">
+                <label class="form__label" for="id_email">
+                    <span class="form__text">E-mail:</span>
+                </label>
+                <input type="email" name="email" class="form__input" id="id_email" required>
+            </section>
+            
+            <section class="form__item">
+                <label class="form__label" for="id_password1">
+                    <span class="form__text">Пароль:</span>
+                </label>
+                <input type="password" name="password1" class="form__input" id="id_password1" required>
+            </section>
+            
+            <section class="form__item">
+                <label class="form__label" for="id_password2">
+                    <span class="form__text">Подтверди пароль:</span>
+                </label>
+                <input type="password" name="password2" class="form__input" id="id_password2" required>
+            </section>
+
+            {% if form.errors %}
+            <section class="form__item form__item_errors">
+
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+            </section>
+                
+            {% endif %}
+            
+            <button type="submit" class="btn form__submit">Зарегистрироваться</button>
+            <hr>
+            <div class="already-registered">
+                <p class="already-registered__text">Уже есть аккаунт?
+                    <a href="{% url "user:login" %}" class="already-registered__link">Войти</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock  %}

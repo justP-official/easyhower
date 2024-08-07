@@ -1,0 +1,72 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "fontawesome-free-6.5.1-web/webfonts/fa-regular-400.ttf" %}">
+    <link rel="stylesheet" href="{% static "fontawesome-free-6.5.1-web/css/all.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__wrapper">
+                <h1 class="header__h1">Easyhower</h1>
+                <button class="btn btn_menu btn_mobile">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </button>
+                <nav class="navigation">
+                    <article class="menu">
+                        <header class="menu__header">
+                        <h3 class="menu__h3">Меню</h3>
+                        <button class="btn btn_menu btn_mobile">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                        </header>
+                        <ul class="menu__list">
+                            <li class="menu__item">
+                                <a href="/" class="menu__link"><i class="fa-solid fa-house menu__icon"></i>Главная</a>
+                            </li>
+                            {% if not user.is_authenticated %}
+                            <li class="menu__item">
+                                <a href="{% url "user:login" %}" class="menu__link"><i class="fa-solid fa-arrow-right-to-bracket menu__icon"></i>Войти</a>
+                            </li>
+                            {% else %}
+                            {% if user.is_admin or user.is_staff %}
+                            <li class="menu__item">
+                                <a href="{% url "admin:index" %}" class="menu__link"><i class="fa-solid fa-toolbox menu__icon"></i>Админка</a>
+                            </li>
+                            {% endif %}
+                            <li class="menu__item">
+                                <a href="{% url "user:profile" %}" class="menu__link"><i class="fa-solid fa-user menu__icon"></i>Профиль - {{ user.username }}</a>
+                            </li>
+                            <li class="menu__item">
+                                <a href="{% url "tasks:tasks" %}" class="menu__link"><i class="fa-solid fa-table menu__icon"></i>К задачам</a>
+                            </li>
+                            <li class="menu__item">
+                                <a href="{% url "user:logout" %}" class="menu__link"><i class="fa-solid fa-arrow-right-from-bracket menu__icon"></i>Выйти</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </article>
+                    
+                    <div class="navigation__overlay">
+                </nav>
+            </div>
+            
+        </div>
+    </header>
+    <main class="main">
+        {% block content %}{% endblock  %}
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p class="footer__text">&copy; Таблица Эйзенхауэра by justP</p>
+        </div>
+    </footer>
+    <script src="{% static "js/main.js" %}"></script>
+</body>
+</html>

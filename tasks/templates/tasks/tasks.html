@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<section class="matrix">
+    <div class="container">
+        <h2 class="matrix__h2">Задачи</h2>
+        <div class="matrix__grid">
+            <article class="cell cell_urgent-important">
+                <header class="cell__header cell__header_urgent-important">
+                    <h3 class="cell__h3 cell__h3_urgent-important">Срочное и важное</h3>
+                    <button class="btn cell__btn btn_mobile" title="Свернуть">
+                        <i class="cell__icon cell__icon_urgent-important fa fa-caret-down"
+                            aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div class="cell__body cell__body_urgent-important">
+                    <ol class="cell__list">
+                        {% for task in tasks %}
+                            {% if task.urgency and task.importancy %}
+                                <li class="task">
+                                    <a href="{% url "tasks:read_task" task.id %}" class="task__link" data-target="read_task">
+                                        {{ task.name }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ol>
+                </div>
+            </article>
+            <article class="cell cell_not-urgent-important">
+                <header class="cell__header cell__header_not-urgent-important">
+                    <h3 class="cell__h3 cell__h3_not-urgent-important">Не срочное и важное</h3>
+                    <button class="btn cell__btn btn_mobile" title="Свернуть">
+                        <i class="cell__icon cell__icon_not-urgent-important fa fa-caret-down"
+                            aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div class="cell__body cell__body_not-urgent-important">
+                    <ol class="cell__list">
+                        {% for task in tasks %}
+                            {% if not task.urgency and task.importancy %}
+                                <li class="task">
+                                    <a href="{% url "tasks:read_task" task.id %}" class="task__link" data-target="read_task">
+                                        {{ task.name }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ol>
+                </div>
+            </article>
+            <article class="cell cell_urgent-not-important">
+                <header class="cell__header cell__header_urgent-not-important">
+                    <h3 class="cell__h3 cell__h3_urgent-not-important">Срочное и не важное</h3>
+                    <button class="btn cell__btn btn_mobile" title="Свернуть">
+                        <i class="cell__icon cell__icon_urgent-not-important fa fa-caret-down"
+                            aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div class="cell__body cell__body_urgent-not-important">
+                    <ol class="cell__list">
+                        {% for task in tasks %}
+                            {% if task.urgency and not task.importancy %}
+                                <li class="task">
+                                    <a href="{% url "tasks:read_task" task.id %}" class="task__link" data-target="read_task">
+                                        {{ task.name }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ol>
+                </div>
+            </article>
+            <article class="cell cell_not-urgent-not-important">
+                <header class="cell__header cell__header_not-urgent-not-important">
+                    <h3 class="cell__h3 cell__h3_not-urgent-not-important">Не срочное и не важное</h3>
+                    <button class="btn cell__btn btn_mobile" title="Свернуть">
+                        <i class="cell__icon cell__icon_not-urgent-not-important fa fa-caret-down"
+                            aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div class="cell__body cell__body_not-urgent-not-important">
+                    <ol class="cell__list">
+                        {% for task in tasks %}
+                            {% if not task.urgency and not task.importancy %}
+                                <li class="task">
+                                    <a href="{% url "tasks:read_task" task.id %}" class="task__link" data-target="read_task">
+                                        {{ task.name }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ol>
+                </div>
+            </article>
+        </div>
+    </div>
+    
+</section>
+
+{% include "tasks/includes/create_task.html" %}
+
+{% endblock %}

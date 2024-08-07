@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<section class="profile">
+    <div class="container">
+        <h2 class="profile__h2">Профиль</h2>
+        {% comment %} TODO: Данные пользователя {% endcomment %}
+        <article class="statistics">
+            <h2 class="statistics__h2">Статистика</h2>
+            <p class="statistics__p">Выполнено задач: <span class="statistics__counter">{{ user.complate_tasks_quantity }}</span></p>
+        </article>
+
+        {% comment %} TODO: Выполненые задачи {% endcomment %}
+        <article class="cell cell_completed">
+            <header class="cell__header cell__header_completed">
+                <h3 class="cell__h3 cell__h3_completed">Выполненые задачи</h3>
+                <button class="btn cell__btn" title="Свернуть">
+                    <i class="cell__icon cell__icon_completed fa fa-caret-down" aria-hidden="true"></i>
+                </button>
+            </header>
+            <div class="cell__body cell__body_completed">
+                <ol class="cell__list">
+                    {% for task in tasks %}
+                        <li class="task"><a href="{% url "tasks:read_task" task.id %}" class="task__link" data-target="read_task">{{ task.name }}</a></li>
+                    {% endfor %}
+                    
+                </ol>
+            </div>
+        </article>
+        
+        <article class="personal-data">
+            <h2 class="personal-data__h2">Смена пароля</h2>
+            <form action="{% url "user:password_change" %}" class="form" method="post">
+                {% csrf_token %}
+                <section class="form__item">
+                    <label class="form__label" for="id_old_password">
+                        <span class="form__text">Старый пароль:</span>
+                    </label>
+                    <input type="password" name="old_password" class="form__input" id="id_old_password" required>
+                </section>
+
+                <section class="form__item">
+                    <label class="form__label" for="new_password1">
+                        <span class="form__text">Новый пароль:</span>
+                    </label>
+                    <input type="password" name="new_password1" class="form__input" id="new_password1" required>
+                </section>
+                
+                <section class="form__item">
+                    <label class="form__label" for="new_password2">
+                        <span class="form__text">Подтверди пароль:</span>
+                    </label>
+                    <input type="password" name="new_password2" class="form__input" id="new_password2" required>
+                </section>
+
+                {% if form.errors %}
+                <section class="form__item form__item_errors">
+
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                </section>
+                    
+                {% endif %}
+                <button type="submit" class="btn form__submit">Сохранить</button>
+            </form>
+        </article>
+    </div>
+
+
+</section>
+{% endblock %}

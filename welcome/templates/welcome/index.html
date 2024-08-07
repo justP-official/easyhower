@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<section class="about">
+    <div class="container flex">
+        <div class="flex__left">
+            <h2 class="about__h2">Таблица Эйзенхауэра</h2>
+            <div class="about__text-box">
+                <p class="about__text">Легко распредели свои дела</p>
+                <p class="about__text">Держи все занятия под контролем</p>
+                <p class="about__text">Привнеси в свою жизнь порядок</p>
+            </div>
+            <a href="{% if user.is_authenticated %}{% url "tasks:tasks" %}{% else %}{% url "user:registration" %}{% endif %}" class="btn about__link">Попробуй бесплатно</a>
+        </div>
+        <div class="flex__right">
+            <img src="{% static "img/example.jpeg" %}" alt="Таблица Эйзенхауэра на примере" class="about__image">
+        </div>
+    </div>
+</section>
+<section class="advanteges">
+    <div class="container">
+        <h2 class="advanteges__h2">Преимущества</h2>
+        <div class="advanteges__grid">
+            <article class="advantege">
+                <h3 class="advantege__h3">Быстро</h3>
+                <div class="advantege__body">
+                    <i class="advantege__icon fa-regular fa-clock"></i>
+                    <p class="advantege__text">Все дела отсортированы за несколько кликов</p>
+                </div>
+            </article>
+            <article class="advantege">
+                <h3 class="advantege__h3">Просто</h3>
+                <div class="advantege__body">
+                    <i class="advantege__icon fa-regular fa-face-smile-beam"></i>
+                    <p class="advantege__text">Интуитивно понятный интерфейс</p>
+                </div>
+            </article>
+            <article class="advantege">
+                <h3 class="advantege__h3">Наглядно</h3>
+                <div class="advantege__body">
+                    <i class="advantege__icon fa-regular fa-eye"></i>
+                    <p class="advantege__text">Все задачи удобно распределены</p>
+                </div>
+            </article>
+            <article class="advantege">
+                <h3 class="advantege__h3">Везде</h3>
+                <div class="advantege__body">
+                    <i class="advantege__icon fa-solid fa-mobile-screen"></i>
+                    <p class="advantege__text">Доступно на всех устройствах с одного аккаунта</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+<section class="sign-up">
+    <div class="container flex">
+        <div class="flex__left">
+            <h2 class="sign-up__h2">Регистрируйся бесплатно</h2>
+            <div class="sign-up__text-box">
+                <p class="sign-up__text">Присоединяйся и наведи порядок в жизни</p>
+            </div>
+        </div>
+        <div class="flex__right">
+            {% if not user.is_authenticated %}
+            <form action="{% url "user:registration" %}" class="form" method="post">
+                {% csrf_token %}
+                <section class="form__item">
+                    <label class="form__label" for="id_username">
+                        <span class="form__text">Имя пользователя:</span>
+                    </label>
+                    <input type="text" name="username" class="form__input" id="id_username" required>
+                </section>
+
+                <section class="form__item">
+                    <label class="form__label" for="id_email">
+                        <span class="form__text">E-mail:</span>
+                    </label>
+                    <input type="email" name="email" class="form__input" id="id_email" required>
+                </section>
+                
+                <section class="form__item">
+                    <label class="form__label" for="id_password1">
+                        <span class="form__text">Пароль:</span>
+                    </label>
+                    <input type="password" name="password1" class="form__input" id="id_password1" required>
+                </section>
+                
+                <section class="form__item">
+                    <label class="form__label" for="id_password2">
+                        <span class="form__text">Подтверди пароль:</span>
+                    </label>
+                    <input type="password" name="password2" class="form__input" id="id_password2" required>
+                </section>
+
+                {% if form.errors %}
+                <section class="form__item form__item_errors">
+
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                </section>
+                    
+                {% endif %}
+                
+                <button type="submit" class="btn form__submit">Зарегистрироваться</button>
+                <hr>
+                <div class="already-registered">
+                    <p class="already-registered__text">Уже есть аккаунт?
+                        <a href="{% url "user:login" %}" class="already-registered__link">Войти</a>
+                    </p>
+                </div>
+            </form>
+            {% else %}
+            <div class="already-logined">
+                <h2 class="already-logined__h2">Вы уже с нами!</h2>
+                <p class="already-logined__p">Приступайте к задачам</p>
+                <a href="{% url "tasks:tasks" %}" class="btn btn_already-logined">К задачам</a>
+            </div>
+            {% endif %}
+            
+        </div>
+    </div>
+</section>
+{% endblock  %}

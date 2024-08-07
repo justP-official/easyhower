@@ -1,0 +1,113 @@
+{% load static %}
+
+<article class="modal" id="read_task">
+    <div class="modal__box">
+        <hedaer class="modal__header">
+            <h2 class="modal__h2">Детали задачи</h2>
+            <button class="btn btn_close-modal" data-target="read_task">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+        </hedaer>
+        <div class="modal__body">
+            <section class="tab active" id="task_info">
+                
+                <div class="task-info">
+                    <h2 class="task-info__h2">Название задачи</h2>
+                    <p class="task-info__name">{{ task.name }}</p>
+                    <h2 class="task-info__h2">Описание задачи</h2>
+                    <p class="task-info__description">{{ task.description }}</p>
+                    <h2 class="task-info__h2">Срочность задачи</h2>
+                    <p class="task-info__urgency">{% if task.urgency %}Срочно{% else %}Не срочно{% endif %}</p>
+                    <h2 class="task-info__h2">Важность задачи</h2>
+                    <p class="task-info__importancy">{% if task.importancy %}Важно{% else %}Не важно{% endif %}</p>
+                </div>
+            </section>
+
+            <section class="tab" id="update_task">
+                <form action="{% url "tasks:update_task" task.id %}" class="form" method="post">
+                    {% csrf_token %}
+                    <section class="form__item">
+                        <label class="form__label" for="id_name">
+                            <span class="form__text">Название задачи:</span>
+                        </label>
+                        <input type="text" name="name" class="form__input" id="id_name" value="{{ task.name }}" required>
+                    </section>
+
+                    <section class="form__item">
+                        <label class="form__label" for="id_description">
+                            <span class="form__text">Описание задачи:</span>
+                        </label>
+                        <textarea class="form__input form__input_textarea" name="description" id="id_description">{{ task.description }}</textarea>
+                    </section>
+
+                    <section class="form__item">
+                        <span class="form__text">Срочность:</span>
+                        <div class="form__wrapper">
+                            <label class="form__label">
+                                <input type="radio" name="urgency" value="1" class="form__radiobutton" {% if task.urgency %}checked{% endif %} id="id_urgency" required>
+                                <span class="form__radiobutton-text">Срочно</span>
+                            </label>
+                            <label class="form__label">
+                                <input type="radio" name="urgency" value="0" class="form__radiobutton" {% if not task.urgency %}checked{% endif %} id="id_urgency" >
+                                <span class="form__radiobutton-text">Не срочно</span>
+                            </label>
+                        </div>
+                    </section>
+
+                    <section class="form__item">
+                        <span class="form__text">Важность:</span>
+                        <div class="form__wrapper">
+                            <label class="form__label">
+                                <input type="radio" name="importancy" value="1" class="form__radiobutton" {% if task.importancy %}checked{% endif %} id="id_importancy" required>
+                                <span class="form__radiobutton-text">Важно</span>
+                            </label>
+                            <label class="form__label">
+                                <input type="radio" name="importancy" value="0" {% if not task.importancy %}checked{% endif %} class="form__radiobutton" id="id_importancy">
+                                <span class="form__radiobutton-text">Не важно</span>
+                            </label>
+                        </div>
+                    </section>
+
+                    {% if form.errors %}
+                    <section class="form__item form__item_errors">
+
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                    </section>
+                        
+                    {% endif %}
+
+                    <button type="submit" class="btn form__submit">Изменить</button>
+                </form>
+            </section>
+
+            <section class="tab" id="delete_task">
+                <form action="{% url "tasks:delete_task" task.id %}" class="form" method="post">
+                    {% csrf_token %}
+                    <h2 class="form__h2">Вы действительно хотите удалить задачу?</h2>
+                    <button type="submit" class="btn form__submit">Да, удалить</button>
+                </form>
+            </section>
+        </div>
+
+        {% if task.is_active %}
+            <footer class="modal__footer">
+                <div class="tabs-switcher">
+                    <div class="tabs-switcher__item">
+                        <a href="{% url "tasks:complate_task" task.id  %}" class="btn btn_complate-task tabs-switcher__btn"><i class="fa-solid fa-check tabs-switcher__icon"></i>Выполнить</a>
+                        <button class="btn tabs-switcher__btn tabs-switcher__btn_open btn_update-task" data-open="update_task"><i class="fa-solid fa-pen tabs-switcher__icon"></i>Изменить</button>
+                        <button class="btn tabs-switcher__btn tabs-switcher__btn_open btn_delete-task" data-open="delete_task"><i class="fa-solid fa-trash-can tabs-switcher__icon"></i>Удалить</button>
+                        <!-- <a href="" class="btn tabs-switcher__btn"></a> -->
+                    </div>
+                    <div class="tabs-switcher__item tabs-switcher__item_hidden">
+                        <button class="btn tabs-switcher__btn tabs-switcher__btn_close" data-open="task_info"><i class="fa-solid fa-arrow-left tabs-switcher__icon"></i>Назад</button>
+                    </div>
+                </div>
+            </footer>
+        {% endif %}
+    </div>
+    <div class="modal__overlay"></div>
+</article>

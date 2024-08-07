@@ -1,0 +1,129 @@
+{% load static %}
+
+<button class="btn btn_open-modal" data-target="add_task">
+    <i class="fa fa-plus" aria-hidden="true"></i>
+</button>
+
+<article class="modal" id="add_task">
+    <div class="modal__box">
+        <hedaer class="modal__header">
+            <h2 class="modal__h2">Добавить задачу</h2>
+            <button class="btn btn_close-modal" data-target="add_task">
+                <i class="fa fa-times" aria-hidden="true"></i></button>
+        </hedaer>
+        <div class="modal__body">
+            <section class="tab active" id="add_task_form">
+                <form action="{% url "tasks:create_task" %}" class="form" method="post">
+                    {% csrf_token %}
+                    <section class="form__item">
+                        <label class="form__label" for="id_name">
+                            <span class="form__text">Название задачи:</span>
+                        </label>
+                        <input type="text" name="name" class="form__input" id="id_name" required>
+                    </section>
+
+                    <section class="form__item">
+                        <label class="form__label" for="id_description">
+                            <span class="form__text">Описание задачи:</span>
+                        </label>
+                        <textarea class="form__input form__input_textarea" name="description"
+                            id="id_description"></textarea>
+                    </section>
+
+                    <section class="form__item">
+                        <span class="form__text">Срочность:</span>
+                        <div class="form__wrapper">
+                            <label class="form__label">
+                                <input type="radio" name="urgency" value="1" class="form__radiobutton" id="id_urgency" required>
+                                <span class="form__radiobutton-text">Срочно</span>
+                            </label>
+                            <label class="form__label">
+                                <input type="radio" name="urgency" value="0" class="form__radiobutton" id="id_urgency">
+                                <span class="form__radiobutton-text">Не срочно</span>
+                            </label>
+                        </div>
+                    </section>
+
+                    <section class="form__item">
+                        <span class="form__text">Важность:</span>
+                        <div class="form__wrapper">
+                            <label class="form__label">
+                                <input type="radio" name="importancy" value="1" class="form__radiobutton" id="id_importancy" required>
+                                <span class="form__radiobutton-text">Важно</span>
+                            </label>
+                            <label class="form__label">
+                                <input type="radio" name="importancy" value="0" class="form__radiobutton" id="id_importancy">
+                                <span class="form__radiobutton-text">Не важно</span>
+                            </label>
+                        </div>
+                    </section>
+
+                    {% if form.errors %}
+                    <section class="form__item form__item_errors">
+
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                    </section>
+                        
+                    {% endif %}
+
+                    <button type="submit" class="btn form__submit">Добавить</button>
+                </form>
+            </section>
+
+            <section class="tab" id="how-to-use">
+                <h2 class="tab__h2">Что это?</h2>
+                <div class="tab__text">
+                    Матрица Эйзенхауэра представляет собой четыре квадранта, основанием которых служат две оси —
+                    это ось важности (по вертикали) и ось срочности (по горизонтали). В итоге получается, что
+                    каждый квадрант отличается своими качественными показателями. В каждый из квадрантов
+                    записываются все задачи и дела, благодаря чему образуется предельно ясная и объективная
+                    картина того, чем следует заняться в первую очередь, чем – во вторую, а чем вообще
+                    заниматься не стоит.
+                </div>
+                <h2 class="tab__h2">Как пользоваться?</h2>
+                <div class="tab__text">
+                    Перед тем, как добавить новую задачу, задайте себе два вопроса: "Это срочно?" и "Это
+                    важно?".
+                    <br>
+                    В категорию "Срочное и важное" следует добавить:
+                    <ul class="tab__list">
+                        <li>Горящие проекты,</li>
+                        <li>проблемы со здоровьем,</li>
+                        <li>экстренные ситуации.</li>
+                    </ul>
+                    В категорию "Не срочное и важное" следует добавить:
+                    <ul class="tab__list">
+                        <li>Основная деятельность в бизнесе или на работе,</li>
+                        <li>повседневные дела, которые нельзя не делать.</li>
+                    </ul>
+                    В категорию "Срочное и не важное" следует добавить:
+                    <ul class="tab__list">
+                        <li>Рутинные дела</li>
+                        <li>большинство звонков,</li>
+                        <li>прочие отвлекающие факторы</li>
+                    </ul>
+                    В категорию "Не срочное и не важное" следует добавить:
+                    <ul class="tab__list">
+                        <li>Развлечения,</li>
+                        <li>«пожиратели времени».</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+        <footer class="modal__footer">
+            <div class="tabs-switcher">
+                <div class="tabs-switcher__item">
+                    <button class="btn tabs-switcher__btn tabs-switcher__btn_open btn_how-to-use" data-next="tabs-switcher__btn_close" data-open="how-to-use"><i class="fa-solid fa-question tabs-switcher__icon"></i>Как пользоваться?</button>
+                </div>
+                <div class="tabs-switcher__item tabs-switcher__item_hidden">
+                    <button class="btn tabs-switcher__btn tabs-switcher__btn_close" data-next="tabs-switcher__btn_open" data-open="add_task_form"><i class="fa-solid fa-arrow-left tabs-switcher__icon"></i>Назад</button>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <div class="modal__overlay"></div>
+</article>
